@@ -1,6 +1,6 @@
 import { View, FlatList, Image, Text, Button } from 'react-native';
 import { Overlay } from 'react-native-elements';
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from "react-redux";
 import { removeFavorite } from '../../redux/favoriteSlice';
 import styles from './FavoritedCharacters.style'
@@ -9,11 +9,6 @@ const FavoritedCharacters = () => {
 
     const favoriteIds = useSelector((state) => state.favorite.ids);
     const dispatch = useDispatch();
-    const [visible, setVisible] = useState(false);
-
-    const toggleOverlay = () => {
-        setVisible(!visible);
-    };
 
     const renderItem = ({ item }) => {
         return (
@@ -25,15 +20,8 @@ const FavoritedCharacters = () => {
                 <Text style={styles.name}>{item.name}</Text>
                 <Button
                     title="Sil"
-                    onPress={toggleOverlay}
+                    onPress={() => dispatch(removeFavorite(item))}
                 />
-                <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
-                    <Text>{item.name} isimli karakteri favorilerden silmek istediğinize emin misiniz? </Text>
-                    <Button
-                        title="Evet"
-                        onPress={() => dispatch(removeFavorite(item))}
-                    />
-                </Overlay>
             </View>
         )
     };
